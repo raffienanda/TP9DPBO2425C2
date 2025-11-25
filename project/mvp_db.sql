@@ -24,3 +24,16 @@ INSERT INTO pembalap (nama, tim, negara, poinMusim, jumlahMenang) VALUES
 ('Lando Norris', 'McLaren', 'United Kingdom', 88, 0),
 ('Pierre Gasly', 'AlphaTauri', 'France', 75, 0),
 ('Fernando Alonso', 'Alpine', 'Spain', 65, 0);
+
+CREATE TABLE IF NOT EXISTS sirkuit (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(255) NOT NULL,
+    negara VARCHAR(255) NOT NULL,
+    panjang_km FLOAT DEFAULT 0,
+    jumlah_tikungan INT DEFAULT 0
+);
+
+INSERT INTO sirkuit (nama, negara, panjang_km, jumlah_tikungan) VALUES
+('Sirkuit Mandalika', 'Indonesia', 4.31, 17),
+('Silverstone', 'United Kingdom', 5.89, 18),
+('Monza', 'Italy', 5.79, 11);

@@ -7,46 +7,34 @@ include_once(__DIR__ . "/../views/ViewPembalap.php");
 
 class PresenterPembalap implements KontrakPresenter
 {
-    // Model PembalapQuery untuk operasi database
-    private $tabelPembalap; // Instance dari TabelPembalap (Model)
-    private $viewPembalap; // Instance dari ViewPembalap (View)
-
-    // Data list pembalap
-    private $listPembalap = []; // Menyimpan array objek Pembalap
+    private $tabelPembalap;
+    private $viewPembalap;
+    private $listPembalap = [];
 
     public function __construct($tabelPembalap, $viewPembalap)
     {
         $this->tabelPembalap = $tabelPembalap;
         $this->viewPembalap = $viewPembalap;
-        $this->initListPembalap();
     }
 
-    // Method untuk initialisasi list pembalap dari database
     public function initListPembalap()
     {
         $data = $this->tabelPembalap->getAllPembalap();
-
         $this->listPembalap = [];
         foreach ($data as $item) {
-            $pembalap = new Pembalap(
-                $item['id'],
-                $item['nama'],
-                $item['tim'],
-                $item['negara'],
-                $item['poinMusim'],
-                $item['jumlahMenang']
+            $this->listPembalap[] = new Pembalap(
+                $item['id'], $item['nama'], $item['tim'], 
+                $item['negara'], $item['poinMusim'], $item['jumlahMenang']
             );
-            $this->listPembalap[] = $pembalap;
         }
     }
 
-    // Method untuk menampilkan daftar pembalap menggunakan View
     public function tampilkanPembalap(): string
     {
+        $this->initListPembalap();
         return $this->viewPembalap->tampilPembalap($this->listPembalap);
     }
 
-    // Method untuk menampilkan form
     public function tampilkanFormPembalap($id = null): string
     {
         $data = null;
@@ -56,19 +44,16 @@ class PresenterPembalap implements KontrakPresenter
         return $this->viewPembalap->tampilFormPembalap($data);
     }
 
-    // implementasikan metode
-
     public function tambahPembalap($nama, $tim, $negara, $poinMusim, $jumlahMenang): void {
-        // isi ga ya
+        $this->tabelPembalap->addPembalap($nama, $tim, $negara, $poinMusim, $jumlahMenang);
     }
     
     public function ubahPembalap($id, $nama, $tim, $negara, $poinMusim, $jumlahMenang): void {
-        // isi ga ya
+        $this->tabelPembalap->updatePembalap($id, $nama, $tim, $negara, $poinMusim, $jumlahMenang);
     }
     
     public function hapusPembalap($id): void {
-        // isi ga ya
+        $this->tabelPembalap->deletePembalap($id);
     }
 }
-
 ?>

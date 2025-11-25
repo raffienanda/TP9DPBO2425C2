@@ -1,9 +1,6 @@
 <?php
-
-interface KontrakView
-{
-    public function tampilPembalap($listPembalap): string;
-    public function tampilFormPembalap($data = null): string;
+interface KontrakViewSirkuit {
+    public function tampilSirkuit($listSirkuit): string;
+    public function tampilFormSirkuit($data = null): string;
 }
-
 ?>
