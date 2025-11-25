@@ -6,7 +6,6 @@ include_once ("models/Pembalap.php");
 class ViewPembalap implements KontrakView{
 
     public function __construct(){
-        // Konstruktor kosong
     }
 
     // Method untuk menampilkan daftar pembalap
