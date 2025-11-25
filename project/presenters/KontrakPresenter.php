@@ -21,7 +21,6 @@ interface KontrakPresenter
 {
     // method untuk tampilkan pembalap
     public function tampilkanPembalap(): string;
-
     // method untuk tampilkan form pembalap
     public function tampilkanFormPembalap($id = null): string;
 

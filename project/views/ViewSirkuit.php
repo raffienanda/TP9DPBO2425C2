@@ -4,6 +4,7 @@ include_once("models/Sirkuit.php");
 
 class ViewSirkuit implements KontrakViewSirkuit {
     public function tampilSirkuit($listSirkuit): string {
+        // 1. Build Table Rows ($tbody)
         $tbody = '';
         $no = 1;
         foreach($listSirkuit as $s){
@@ -21,25 +22,31 @@ class ViewSirkuit implements KontrakViewSirkuit {
             $no++;
         }
         
-        // Menggunakan template skin.html yang sama, tapi kita ubah header tabelnya via replace
+        // 2. Load Template
         $template = file_get_contents(__DIR__ . '/../template/skin.html');
         
-        // Ubah Judul
+        // 3. Ubah Judul & Navigasi
         $template = str_replace('Daftar Pembalap', 'Daftar Sirkuit', $template);
         $template = str_replace('Pembalap — Daftar', 'Sirkuit — Daftar', $template);
         $template = str_replace('+ Tambah Pembalap', '+ Tambah Sirkuit', $template);
         $template = str_replace('href="index.php?screen=add"', 'href="index.php?nav=sirkuit&screen=add"', $template);
         
-        // Ubah Header Tabel
-        $headerBaru = '<th>Nama Sirkuit</th><th>Negara</th><th>Panjang (km)</th><th>Tikungan</th>';
-        $headerLama = '<th>Nama</th><th>Tim</th><th>Negara</th><th>Poin Musim</th><th>Jumlah Menang</th>';
-        $template = str_replace($headerLama, $headerBaru, $template);
+        // 4. Ubah Header Tabel (Menggunakan Regex agar lebih kuat)
+        $pattern = '/<th>Nama<\/th>.*?<th>Tim<\/th>.*?<th>Negara<\/th>.*?<th>Poin Musim<\/th>.*?<th>Jumlah Menang<\/th>/s';
+        $replacement = '<th>Nama Sirkuit</th>
+                        <th>Negara</th>
+                        <th>Panjang (km)</th>
+                        <th>Tikungan</th>';
+        $template = preg_replace($pattern, $replacement, $template);
 
-        // Inject Rows
+        // 5. Inject Rows (PERBAIKAN UTAMA ADA DI SINI)
+        // Pastikan parameter pertama adalah ''
         $template = str_replace('', $tbody, $template);
+        
+        // Update Total Count
         $template = str_replace('Total:', 'Total: ' . count($listSirkuit), $template);
 
-        // Ubah Script delete agar tetap di nav=sirkuit
+        // 6. Fix Delete Button Script
         $scriptLama = "actionInput.value = 'delete';";
         $scriptBaru = "actionInput.value = 'delete'; \n var navInput = document.createElement('input'); navInput.type='hidden'; navInput.name='nav'; navInput.value='sirkuit'; form.appendChild(navInput);";
         $template = str_replace($scriptLama, $scriptBaru, $template);
@@ -83,8 +90,7 @@ class ViewSirkuit implements KontrakViewSirkuit {
         // Karena replace ribet, saya return string HTML full simple saja
         // Tapi agar style terjaga, kita inject ke <div class="card">
         
-        $cleanTemplate = preg_replace('/<form.*<\/form>/s', '<form method="post" action="index.php">'.$formContent.'</form>', $template);
-        return $cleanTemplate;
+        $cleanTemplate = preg_replace('/<form.*<\/form>/s', '<form method="post" action="index.php?nav=sirkuit">'.$formContent.'</form>', $template);        return $cleanTemplate;
     }
 }
 ?>

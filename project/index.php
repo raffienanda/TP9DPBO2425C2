@@ -17,7 +17,7 @@ $dbUser = 'root';
 $dbPass = ''; // Sesuaikan password database Anda
 
 // Routing sederhana berdasarkan parameter 'nav'
-$nav = $_GET['nav'] ?? 'pembalap';
+$nav = $_GET['nav'] ?? $_POST['nav'] ?? 'pembalap';
 
 // =======================
 // MODULE: PEMBALAP
