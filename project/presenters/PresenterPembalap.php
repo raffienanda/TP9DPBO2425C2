@@ -16,25 +16,44 @@ class PresenterPembalap implements KontrakPresenter
 
     public function __construct($tabelPembalap, $viewPembalap)
     {
-        // isi mas
+        $this->tabelPembalap = $tabelPembalap;
+        $this->viewPembalap = $viewPembalap;
+        $this->initListPembalap();
     }
 
     // Method untuk initialisasi list pembalap dari database
     public function initListPembalap()
     {
-        // isi mas
+        $data = $this->tabelPembalap->getAllPembalap();
+
+        $this->listPembalap = [];
+        foreach ($data as $item) {
+            $pembalap = new Pembalap(
+                $item['id'],
+                $item['nama'],
+                $item['tim'],
+                $item['negara'],
+                $item['poinMusim'],
+                $item['jumlahMenang']
+            );
+            $this->listPembalap[] = $pembalap;
+        }
     }
 
     // Method untuk menampilkan daftar pembalap menggunakan View
     public function tampilkanPembalap(): string
     {
-        // isi mas
+        return $this->viewPembalap->tampilPembalap($this->listPembalap);
     }
 
     // Method untuk menampilkan form
     public function tampilkanFormPembalap($id = null): string
     {
-        // isi juga mas
+        $data = null;
+        if($id != null) {
+            $data = $this->tabelPembalap->getPembalapById($id);
+        }
+        return $this->viewPembalap->tampilFormPembalap($data);
     }
 
     // implementasikan metode
