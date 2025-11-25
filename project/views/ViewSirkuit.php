@@ -1,5 +1,5 @@
 <?php
-include_once("KontrakViewSirkuit.php");
+include_once("KontrakViewSirkuit.php"); // Pastikan nama file ini sesuai dengan langkah no 2
 include_once("models/Sirkuit.php");
 
 class ViewSirkuit implements KontrakViewSirkuit {

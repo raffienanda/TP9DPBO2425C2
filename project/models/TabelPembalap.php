@@ -1,7 +1,7 @@
 <?php
 
 include_once("models/DB.php");
-include_once("models/KontrakModel.php");
+include_once("KontrakModel.php");
 
 class TabelPembalap extends DB implements KontrakModel
 {
